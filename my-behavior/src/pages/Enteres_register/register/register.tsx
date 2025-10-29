@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom";
+
 export default function RegisterPage() {
     return (
         <>
@@ -8,7 +10,8 @@ export default function RegisterPage() {
                         src="../public/logo_for_reg.jpg"
                         className="mx-auto h-10 w-auto"
                     />
-                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-black">Реєстрація з реферальним словом</h2>
+                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-black">Реєстрація з
+                        реферальним словом</h2>
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -31,14 +34,11 @@ export default function RegisterPage() {
 
                         <div>
                             <div className="flex items-center justify-between">
-                                <label htmlFor="Promo" className="block text-sm/6 font-medium text-black-100">
+                                <label htmlFor="Promo"
+                                       className="block text-sm/6 font-medium text-black-100 text-center">
                                     Реферальний код
                                 </label>
-                                <div className="text-sm">
-                                    <a href="#" className="font-semibold text-[#ffcdd6] hover:text-indigo-300">
-                                        Немає реферального коду?
-                                    </a>
-                                </div>
+
                             </div>
                             <div className="mt-2">
                                 <input
@@ -61,19 +61,23 @@ export default function RegisterPage() {
                             </button>
                         </div>
                         <div>
+                            <Link to="/EnterPage"
+                                  type="submit"
+                                  className="flex w-full justify-center rounded-md bg-black px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-[#ffcdd6] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                            >
+                                Увійти
+                            </Link>
+                        </div>
+                        <div>
                             <button
                                 type="submit"
-                                className="flex w-full justify-center rounded-md bg-black px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-[#ffcdd6] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                                className="flex w-full justify-center rounded-md bg-[#ffcdd6] px-3 py-1.5 text-sm/6 font-semibold text-black hover:bg-[#ffcdd6] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 border-2 border-black"
                             >
                                 Увійти через MetaMask
                             </button>
                         </div>
                     </form>
 
-                    <p className="mt-10 text-center text-sm/6 text-black-400">
-                        Вже зареестрований? Увійти{' '}
-
-                    </p>
                 </div>
             </div>
         </>

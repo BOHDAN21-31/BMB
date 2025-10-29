@@ -8,7 +8,8 @@ export default function EnterPage() {
                         src="../public/logo_for_reg.jpg"
                         className="mx-auto h-10 w-auto"
                     />
-                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-black">Вхід до акаунту</h2>
+                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-black">Вхід до
+                        акаунту</h2>
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -70,10 +71,6 @@ export default function EnterPage() {
                         </div>
                     </form>
 
-                    <p className="mt-10 text-center text-sm/6 text-black-400">
-                        Ще не зареестрований? Зарееструйся{' '}
-
-                    </p>
                 </div>
             </div>
         </>
