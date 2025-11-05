@@ -16,13 +16,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}
     const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
-        // Получаем текущую сессию при монтировании
         supabase.auth.getSession().then(({data}) => {
             setSession(data.session ?? null);
             setUser(data.session?.user ?? null);
         });
 
-        // Подписываемся на изменения аутентификации
         const {data: listener} = supabase.auth.onAuthStateChange((_event, newSession) => {
             setSession(newSession ?? null);
             setUser(newSession?.user ?? null);

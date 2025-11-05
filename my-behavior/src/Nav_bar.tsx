@@ -8,7 +8,7 @@ export default function Nav_bar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
-    const {user, signOut} = useAuth(); // ⚠️ заменил signOut на logout — так в твоём контексте
+    const {user, signOut} = useAuth();
 
     useEffect(() => {
         setMobileMenuOpen(false);
@@ -25,7 +25,6 @@ export default function Nav_bar() {
                 aria-label="Global"
                 className="mx-auto flex max-w-7xl items-center justify-between p-3 lg:px-4"
             >
-                {/* --- ЛОГО --- */}
                 <div className="flex lg:flex-1">
                     <Link to="/manifestPage" className="-m-1.5 p-1.5">
                         <span className="sr-only">By My Behavior</span>
@@ -33,7 +32,6 @@ export default function Nav_bar() {
                     </Link>
                 </div>
 
-                {/* --- Мобильная кнопка меню --- */}
                 <div className="flex lg:hidden">
                     <button
                         type="button"
@@ -45,10 +43,9 @@ export default function Nav_bar() {
                     </button>
                 </div>
 
-                {/* --- Навигация (desktop) --- */}
                 <PopoverGroup className="hidden lg:flex lg:gap-x-12">
                     {user ? (
-                        // 🔒 Если пользователь залогинен
+
                         <>
                             <Link
                                 to="/UsProfile"
@@ -82,7 +79,6 @@ export default function Nav_bar() {
                             </Link>
                         </>
                     ) : (
-                        // 🔓 Если пользователь не залогинен
                         <>
                             <Link
                                 to="/manifestPage"
@@ -99,8 +95,6 @@ export default function Nav_bar() {
                         </>
                     )}
                 </PopoverGroup>
-
-                {/* --- Кнопки справа (desktop) --- */}
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-3">
                     {!user ? (
                         <>
@@ -128,7 +122,6 @@ export default function Nav_bar() {
                 </div>
             </nav>
 
-            {/* --- Мобильное меню --- */}
             <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
                 <div className="fixed inset-0 z-50"/>
                 <DialogPanel

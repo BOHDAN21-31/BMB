@@ -22,7 +22,6 @@ if (!container) throw new Error("Root container not found!");
 createRoot(container).render(
     <StrictMode>
         <BrowserRouter>
-            {/* 🔹 Оборачиваем ВСЁ в AuthProvider */}
             <AuthProvider>
                 <Nav_bar/>
                 <Routes>
