@@ -227,7 +227,6 @@ export default function ProfilePage() {
                     placeholder="Ціна в USDT"
                     className="px-5 py-4 pr-10 rounded-lg border-[1.5px] border-gray-300 text-base bg-white outline-none transition-all duration-200 ease-linear w-full"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">$</span>
 
                 <button
                     onClick={handleSaveScenario}

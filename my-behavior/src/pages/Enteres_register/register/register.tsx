@@ -133,15 +133,6 @@ export default function RegisterPage() {
                                 Увійти
                             </Link>
                         </div>
-
-                        <div>
-                            <button
-                                type="button"
-                                className="flex w-full justify-center rounded-md bg-[#ffcdd6] px-3 py-1.5 text-sm font-semibold text-black border-2 border-black hover:bg-[#ffd8e0]"
-                            >
-                                Увійти через MetaMask
-                            </button>
-                        </div>
                     </form>
                 </div>
             </div>

@@ -20,7 +20,7 @@ export default function LiveMap() {
                     zoom: 12,
                 }}
                 style={{width: "100%", height: "100%"}}
-                mapStyle="mapbox://styles/buymybihavior/cmhl1ri9c004201sj1aaa81q9"
+                mapStyle="mapbox://styles/buymybihavior/cmhwmy9a600i001qugw869we8"
             >
                 {users.map((u) => (
                     <Marker
@@ -29,11 +29,6 @@ export default function LiveMap() {
                         longitude={u.lon}
                         anchor="center"
                     >
-                        <div className="flex flex-col items-center">
-                            <div className="w-3 h-3 bg-green-400 rounded-full animate-ping"/>
-                            <div className="w-4 h-4 bg-green-500 rounded-full border border-white"/>
-                            <span className="text-xs text-white mt-1">{u.name}</span>
-                        </div>
                     </Marker>
                 ))}
             </Map>
