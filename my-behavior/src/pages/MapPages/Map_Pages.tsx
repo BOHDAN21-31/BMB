@@ -2,7 +2,7 @@ import * as React from "react";
 import Map, {Marker} from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-const MAPBOX_TOKEN = "pk.eyJ1IjoiYnV5bXliaWhhdmlvciIsImEiOiJjbWhkc3Npbm4wNmE5MmtxeXpocnN4ZWV5In0.0TPGtpyy97o6UA7ycgZelA";
+const MAPBOX_TOKEN = "pk.eyJ1IjoiYnV5bXliaWhhdmlvciIsImEiOiJjbWM4MzU3cDQxZGJ0MnFzM3NnOHhnaWM4In0.wShhGG9EvmIVxcHjBHImXw";
 
 export default function LiveMap() {
     const users = [
@@ -20,7 +20,7 @@ export default function LiveMap() {
                     zoom: 12,
                 }}
                 style={{width: "100%", height: "100%"}}
-                mapStyle="mapbox://styles/mapbox/dark-v11"
+                mapStyle="mapbox://styles/buymybihavior/cmhl1ri9c004201sj1aaa81q9"
             >
                 {users.map((u) => (
                     <Marker

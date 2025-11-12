@@ -1,166 +1,210 @@
-export default function ManifestPage() {
-    return (
-        <main className="bg-white text-gray-800 font-sans">
-            <section className="container mx-auto py-16 px-4">
-                <h1 className="text-4xl lg:text-5xl font-bold mb-12 text-gray-900 max-w-4xl">
-                    Тримай перший в світі
-                    інструмент, управління поведінкою інших людей.
-                </h1>
-                <section className="py-16 px-4">
-                    <div className="container mx-auto flex flex-col lg:flex-row justify-center items-center flex-wrap gap-8">
-                        <div className="rounded-xl p-8 shadow-sm max-w-sm text-left bg-gray-100">
-                            <h3 className="text-xl font-semibold mb-3">ЩО ТАКЕ БМБ</h3>
-                            <p className="text-gray-700">
-                                Buy My Behavior - це простір де люди створюють свою реальність управляючи поведінкою інших людей.
-                            </p>
-                        </div>
-                        <div className="rounded-xl p-8 shadow-lg max-w-sm text-left bg-orange-500 text-white transform lg:scale-105">
+import React from "react";
 
-                            <h3 className="text-xl font-semibold mb-3">ГАМАНЕЦЬ НА ДОНАТИ</h3>
-                            <p>
-                                Створи , підключити свій гаманець МетаМакс, сама на цей гаманець буде приходити тобі добровільні донати від учасників в USDT.
-                            </p>
+const CONTACT_EMAIL = "viktorsesiuk@gmail.com";
+
+const Manifest: React.FC = () => {
+    const handleAmbassadorClick = () => {
+        const subject = "Стати амбасадором BMB";
+        const body = `Привіт! Хочу стати амбасадором BMB.
+
+Мене звати: ...
+Посилання/аудиторія: ...
+Місто/країна: ...
+
+Дякую!`;
+        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+            subject
+        )}&body=${encodeURIComponent(body)}`;
+    };
+
+    const handleContactClick = () => {
+        const subject = "Запит реферального слова BMB";
+        const body = `Вітаю! Прошу надати реферальне слово для реєстрації в BMB.
+
+Мене звати: ...
+Контакти: ...
+Коротко про мене/аудиторію: ...
+
+Дякую!`;
+        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+            subject
+        )}&body=${encodeURIComponent(body)}`;
+    };
+
+    return (
+        <div className="bg-gray-100 text-black min-h-screen">
+            {/* HERO */}
+            <header className="relative overflow-hidden py-12 sm:py-16">
+                <div className="max-w-6xl mx-auto px-5 bg-white rounded-3xl shadow-md p-8 text-center relative z-10"
+                     style={{
+                         backgroundImage: `radial-gradient(900px 360px at 50% -20%, #fff7fa, transparent 60%), linear-gradient(180deg, #ffffff 0%, #fff7fa 100%)`,
+                     }}
+                >
+          <span
+              className="inline-block bg-white px-3 py-1 rounded-full border border-gray-200 shadow-sm font-semibold text-sm mb-2">
+            Маніфест
+          </span>
+
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-3">
+                        Buy My Behavior
+                    </h1>
+
+                    <div
+                        className="h-px w-11/12 max-w-3xl mx-auto bg-gradient-to-r from-transparent via-gray-300 to-transparent my-3"/>
+
+                    <p className="text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mx-auto opacity-90">
+                        Buy My Behavior — цифровий Web3-простір, де люди обмінюються сценаріями поведінки,
+                        узгоджують умови та захищають угоди ескроу-смартконтрактом.
+                    </p>
+
+                    <div className="flex flex-wrap justify-center gap-2 mt-4">
+                        {["Web3", "Escrow Smart-Contract", "Open Source"].map((pill) => (
+                            <span key={pill}
+                                  className="inline-block px-3 py-1 rounded-full border border-gray-200 bg-white shadow-sm text-sm font-semibold">
+                {pill}
+              </span>
+                        ))}
+                    </div>
+                </div>
+            </header>
+
+            <main className="max-w-6xl mx-auto px-5 py-6 space-y-6">
+                {/* Що таке BMB */}
+                <section className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-4">
+                    <h2 className="text-2xl font-extrabold">Що таке BMB</h2>
+                    <div className="space-y-3 text-sm sm:text-base leading-relaxed">
+                        <p>
+                            Buy My Behavior — це цифровий Web3-простір, де люди обмінюються між собою сценаріями
+                            поведінки. До сьогодні еволюція не дала нам можливості моделювати поведінку інших людей,
+                            читати їхні думки й ідеально взаємодіяти між собою.
+                        </p>
+                        <p>
+                            Дружнє середовище взаємних вчинків BMB дозволяє вам моделювати поведінку навколишніх людей
+                            з описом того, як саме людина має себе поводити — щоб для вас це було ідеальною
+                            комунікацією...
+                        </p>
+                        <p>
+                            Під час реєстрації ви проходите KYC, і ми відкриваємо вам можливість отримувати благодійні
+                            внески
+                            в розмірі <b>до 1 000 USDT за одну угоду</b>. Якщо ви знаменита людина і ваша поведінка — це
+                            щось
+                            дійсно величне, ви можете пройти глибший KYC — тоді сума ваших благодійних донатів-подяк
+                            становитиме
+                            <b> до 10 000 USDT за одну угоду</b>.
+                        </p>
+                    </div>
+                </section>
+
+                {/* Як це працює + Замовлення */}
+                <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-3">
+                        <h2 className="text-2xl font-extrabold">Як це працює</h2>
+                        <ol className="list-decimal list-inside space-y-2 text-sm sm:text-base leading-relaxed">
+                            <li>Отримавши реферальне слово від Амбасадора BMB, ви реєструєтесь...</li>
+                            <li>Опишіть, у чому ви сильні та які життєві комбінації здатні втілити...</li>
+                            <li>За згодою користувача відображається геопозиція...</li>
+                            <li>Оберіть виконавця → натисніть «Замовити поведінку» → узгодьте опис сценарію...</li>
+                            <li>Після «Погодити угоду» ескроу-смартконтракт блокує донат...</li>
+                        </ol>
+                    </div>
+
+                    <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-3">
+                        <h2 className="text-2xl font-extrabold">Замовлення</h2>
+                        <ul className="list-disc list-inside space-y-2 text-sm sm:text-base leading-relaxed">
+                            <li>Опишіть сценарій і важливі нюанси ідеальної взаємодії.</li>
+                            <li>Вкажіть час і дату, оберіть місце на карті.</li>
+                            <li>За бажанням додайте суму донату в USDT для підтримки творчості виконавця.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                {/* Елемент спору */}
+                <section className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-3">
+                    <h2 className="text-2xl font-extrabold">Елемент спору</h2>
+                    <p className="text-sm sm:text-base leading-relaxed">
+                        Якщо замовник не впевнений у виконанні, він може натиснути «Оскаржити виконання». Умикається
+                        смартконтракт спору...
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                            <h3 className="font-semibold mb-1">Приклад</h3>
+                            <p className="text-sm">Замовлено: вигукнути «Це найкраща ідея...»</p>
                         </div>
-                        <div className="rounded-xl p-8 shadow-sm max-w-sm text-left bg-gray-100">
-                            <h3 className="text-xl font-semibold mb-3">Алгоритм</h3>
-                            <p className="text-gray-700">
-                                90% виконавцю. 5% системі. 5% Амбасадору який надав реферальне слово, запросив учасника в систему.
-                            </p>
+                        <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                            <h3 className="font-semibold mb-1">Голосування</h3>
+                            <p className="text-sm">Триває 7 днів або до набрання 101 голосу.</p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                            <h3 className="font-semibold mb-1">Рішення</h3>
+                            <p className="text-sm">Результат голосування автоматично виконується смартконтрактом.</p>
                         </div>
                     </div>
                 </section>
-            </section>
-            <section className="container mx-auto py-16 px-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                    <div>
-                        <h2 className="text-5xl font-bold mb-4 text-gray-900">Про нас</h2>
-                        <p className="text-2xl text-gray-600">
-                            Простір працює по всьому світу, кожен користувач який реєструце з своєї
-                            країни повинен в першу чергу розуміти, що він будучи громадянином цієї країни,
-                            живе по законам цієї країни. Тому в системі BMB ви повинні виконувати закони своєї
-                            країни не порушувати кримінальні ,соціальні, релігійні правила за якими живуть ваші співвітчизники.
-                            Це перше правило, яке дасть вам довгий гарний користувацький досвід
-                        </p>
-                    </div>
-                    <div className="flex flex-col justify-between h-full">
-                        <p className="text-gray-700 mb-8 md:mb-0">
-                            Давай вперед
-                        </p>
-                        <div className="w-10 h-10 flex items-center justify-center text-gray-900 text-3xl font-light cursor-pointer md:self-end">
 
-                            →
+                {/* Амбасадори */}
+                <section className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-4">
+                    <h2 className="text-2xl font-extrabold">Амбасадори</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2 text-sm sm:text-base leading-relaxed">
+                            <p>Середовище BMB є новим, тож вільну реєстрацію закрито...</p>
+                            <p>Усі добровільні донати розподіляються смартконтрактом...</p>
+                        </div>
+                        <div className="space-y-3">
+                            <div className="bg-gray-100 rounded-lg p-4">
+                                <div className="flex h-3 w-full rounded-full overflow-hidden bg-gray-200">
+                                    <div className="bg-pink-400 w-9/10"/>
+                                    <div className="bg-gray-400 w-1/20"/>
+                                    <div className="bg-gray-400 w-1/20"/>
+                                </div>
+                                <div className="grid grid-cols-3 gap-2 text-xs mt-1">
+                                    <span><span className="inline-block w-2 h-2 bg-pink-400 rounded-full mr-1"></span>90% Виконавець</span>
+                                    <span><span className="inline-block w-2 h-2 bg-gray-400 rounded-full mr-1"></span>5% Платформа</span>
+                                    <span><span className="inline-block w-2 h-2 bg-gray-400 rounded-full mr-1"></span>5% Амбасадор</span>
+                                </div>
+                            </div>
 
+                            <button
+                                onClick={handleAmbassadorClick}
+                                className="px-4 py-2 rounded-full border border-gray-300 bg-white shadow-sm font-semibold hover:-translate-y-1 transition-transform"
+                            >
+                                Стати амбасадором
+                            </button>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                {/* Placeholder for Banner Image */}
-                <div className="w-full h-72 bg-gray-200 rounded-xl flex items-center justify-center text-gray-500 mt-12">
-                    [Место для изображения 2]
-                </div>
-            </section>
+                {/* Відкритий код */}
+                <section className="bg-white border border-gray-200 rounded-2xl shadow-md p-6">
+                    <h2 className="text-2xl font-extrabold">Відкритий код</h2>
+                    <p className="text-sm sm:text-base leading-relaxed">
+                        Buy My Behavior створений з відкритим кодом...
+                    </p>
+                </section>
 
-            {/* СЕКЦИЯ 3: Услуги ИИ (image_30c1e6.jpg)
-            */}
-            <section className="bg-gray-50 py-16 px-4">
-                <div className="container mx-auto flex flex-col lg:flex-row gap-12 items-center">
-                    {/* Левая часть: Заголовок и "Изображение" */}
-                    <div className="flex-1">
-                        <h2 className="text-4xl font-bold mb-8 text-center lg:text-left text-gray-900">
-                            Влияние ИИ на образование
-                        </h2>
-                        {/* Placeholder for Image */}
-                        <div className="w-full h-80 bg-gray-200 rounded-xl flex items-center justify-center text-gray-500">
-                            [Место для изображения 3]
-                        </div>
+                {/* Застереження */}
+                <section className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-3">
+                    <h2 className="text-2xl font-extrabold">Застереження</h2>
+                    <ul className="list-disc list-inside space-y-2 text-sm sm:text-base leading-relaxed">
+                        <li>BMB не є постачальником послуг чи платіжною установою...</li>
+                        <li>BMB не надає юридичних або податкових консультацій...</li>
+                        <li>Геолокація використовується лише за згодою користувача...</li>
+                    </ul>
+
+                    <div className="flex flex-col items-center gap-2 mt-3">
+                        <p className="text-xs text-gray-500">Щоб отримати реферальне слово, вам слід написати на
+                            пошту.</p>
+                        <button
+                            onClick={handleContactClick}
+                            className="px-4 py-2 rounded-full border border-gray-300 bg-white shadow-sm font-semibold hover:-translate-y-1 transition-transform"
+                        >
+                            ✉️ Написати на пошту
+                        </button>
                     </div>
+                </section>
+            </main>
+        </div>
+    );
+};
 
-                    {/* Правая часть: Список возможностей (карточки) */}
-                    <div className="flex-1 flex flex-col space-y-8">
-                        {/* Карточка 1 */}
-                        <div className="flex items-start space-x-6">
-                            <div className="flex-shrink-0 bg-orange-500 w-16 h-16 rounded-xl flex items-center justify-center text-white text-xs font-medium">
-                                [Иконка]
-                            </div>
-                            <div>
-                                <h3 className="text-xl font-semibold mb-2 text-gray-900">Агентство ИИ, готовое к будущему</h3>
-                                <p className="text-gray-600">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-                            </div>
-                        </div>
-                        {/* Карточка 2 */}
-                        <div className="flex items-start space-x-6">
-                            <div className="flex-shrink-0 bg-orange-500 w-16 h-16 rounded-xl flex items-center justify-center text-white text-xs font-medium">
-                                [Иконка]
-                            </div>
-                            <div>
-                                <h3 className="text-xl font-semibold mb-2 text-gray-900">Агентства на базе искусственного интеллекта</h3>
-                                <p className="text-gray-600">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-                            </div>
-                        </div>
-                        {/* Карточка 3 */}
-                        <div className="flex items-start space-x-6">
-                            <div className="flex-shrink-0 bg-orange-500 w-16 h-16 rounded-xl flex items-center justify-center text-white text-xs font-medium">
-                                [Иконка]
-                            </div>
-                            <div>
-                                <h3 className="text-xl font-semibold mb-2 text-gray-900">Решения для агентств ИИ</h3>
-                                <p className="text-gray-600">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-                            </div>
-                        </div>
-
-            {/* СЕКЦИЯ 5: Баннер и Клиенты (image_30c209.jpg)
-            */}
-                    </div>
-                </div>
-            </section>
-
-
-            {/* Placeholder for Top Banner Image */}
-            <div className="w-full h-56 bg-gray-200 flex items-center justify-center text-gray-500">
-                [Место для баннера 4]
-            </div>
-
-            <section className="bg-gray-50 py-16 px-4">
-                <div className="container mx-auto">
-                    <h2 className="text-3xl font-bold text-center max-w-2xl mx-auto mb-12 text-gray-900">
-                        5 миллионов компаний используют ИИ для улучшения своих систем по всему миру
-                    </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {/* Карточка клиента 1 */}
-                        <div className="bg-white rounded-xl p-8 shadow-sm text-center flex flex-col items-center">
-                            <div className="w-24 h-8 bg-gray-200 rounded mb-4 flex items-center justify-center text-gray-500 text-sm">
-                                [Лого]
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">Оги</h3>
-                            <p className="text-gray-600 text-sm">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren...</p>
-                        </div>
-                        {/* Карточка клиента 2 */}
-                        <div className="bg-white rounded-xl p-8 shadow-sm text-center flex flex-col items-center">
-                            <div className="w-24 h-8 bg-gray-200 rounded mb-4 flex items-center justify-center text-gray-500 text-sm">
-                                [Лого]
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">Элементы</h3>
-                            <p className="text-gray-600 text-sm">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren...</p>
-                        </div>
-                        {/* Карточка клиента 3 */}
-                        <div className="bg-white rounded-xl p-8 shadow-sm text-center flex flex-col items-center">
-                            <div className="w-24 h-8 bg-gray-200 rounded mb-4 flex items-center justify-center text-gray-500 text-sm">
-                                [Лого]
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">Целостная жизнь</h3>
-                            <p className="text-gray-600 text-sm">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren...</p>
-                        </div>
-                        {/* Карточка клиента 4 */}
-                        <div className="bg-white rounded-xl p-8 shadow-sm text-center flex flex-col items-center">
-                            <div className="w-24 h-8 bg-gray-200 rounded mb-4 flex items-center justify-center text-gray-500 text-sm">
-                                [Лого]
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">Брайто</h3>
-                            <p className="text-gray-600 text-sm">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren...</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    )
-}
+export default Manifest;

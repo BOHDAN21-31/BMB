@@ -58,11 +58,15 @@ export default function ProfilePage() {
 
             <div className="flex flex-col items-center">
                 <div
-                    className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer relative overflow-hidden"
+                    className="flex flex-col items-center justify-center w-[180px] h-[180px] rounded-full border-2 border-dashed border-slate-300 bg-white gap-2 text-slate-500 transition-all duration-300 ease-linear overflow-hidden"
                     onClick={handleAvatarClick}
                 >
                     {avatar ? (
-                        <img src={avatar} alt="Avatar" className="w-full h-full object-cover"/>
+                        <img
+                            src={avatar}
+                            alt="Avatar"
+                            className="w-full h-full object-cover"
+                        />
                     ) : (
                         <div className="text-center text-sm text-gray-600">
                             <svg
@@ -105,68 +109,61 @@ export default function ProfilePage() {
                         </svg>
                     ))}
                 </div>
-                <span className="text-gray-500 text-sm">10.0 / 10 · 0 оцінок</span>
+                <span className="text-gray-500 text-sm">0 / 10 · 0 оцінок</span>
             </div>
 
-            <div className="bg-gray-50 border rounded-2xl p-4 space-y-3">
-                <h2 className="text-lg font-semibold">Налаштування</h2>
-                <div className="flex justify-between items-center">
+            <div
+                className="w-full max-w-[600px] mx-auto mt-3 mb-4 bg-white border border-white rounded-2xl p-4 shadow-[0_14px_28px_rgba(255,131,176,0.18),0_2px_8px_rgba(0,0,0,0.06)]">
+                <h2 className="text-[16px] font-bold text-black mt-[2px] mb-[10px]">
+                    Налаштування
+                </h2>
+
+                <div
+                    className="flex items-center justify-between py-[10px] px-[2px] first:border-t-0 border-t border-dashed border-[#ffe2ea]">
                     <span>Геолокація</span>
                     <label className="relative inline-flex items-center cursor-pointer">
                         <input
                             type="checkbox"
-                            checked={geoEnabled}
-                            onChange={() => setGeoEnabled(!geoEnabled)}
-                            className="sr-only"
+                            className="sr-only peer"
+                            onChange={(e) => e.target.checked}
                         />
                         <div
-                            className={`w-10 h-5 rounded-full transition ${
-                                geoEnabled ? "bg-blue-500" : "bg-gray-300"
-                            }`}
-                        ></div>
+                            className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-pink-400 transition-all"></div>
                         <div
-                            className={`absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition ${
-                                geoEnabled ? "translate-x-5" : ""
-                            }`}
-                        ></div>
+                            className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-full"></div>
                     </label>
                 </div>
 
-                <div className="flex justify-between items-center">
+                <div
+                    className="flex items-center justify-between py-[10px] px-[2px] border-t border-dashed border-[#ffe2ea]">
                     <span>Пуш-сповіщення</span>
                     <label className="relative inline-flex items-center cursor-pointer">
                         <input
                             type="checkbox"
-                            checked={pushEnabled}
-                            onChange={() => setPushEnabled(!pushEnabled)}
-                            className="sr-only"
+                            className="sr-only peer"
+                            onChange={(e) => e.target.checked}
                         />
                         <div
-                            className={`w-10 h-5 rounded-full transition ${
-                                pushEnabled ? "bg-blue-500" : "bg-gray-300"
-                            }`}
-                        ></div>
+                            className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-pink-400 transition-all"></div>
                         <div
-                            className={`absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition ${
-                                pushEnabled ? "translate-x-5" : ""
-                            }`}
-                        ></div>
+                            className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-full"></div>
                     </label>
                 </div>
             </div>
 
-            <div className="bg-white border rounded-2xl p-4 space-y-3">
+            <div
+                className="flex flex-col gap-5 bg-white max-w-[600px] w-full my-4 mx-auto p-8 rounded-2xl border border-gray-300 shadow-[0_8px_32px_#0000000f]">
                 <input
                     placeholder="Ім’я або псевдонім"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="input w-full border rounded-lg p-2"
+                    className="px-5 py-4 rounded-lg border-[1.5px] border-gray-300 text-base bg-white outline-none transition-all duration-200 ease-linear"
+
                 />
                 <select
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
-                    className="input w-full border rounded-lg p-2"
-                >
+                    className="px-5 py-4 rounded-lg border-[1.5px] border-gray-300 text-base bg-white outline-none transition-all duration-200 ease-linear">
                     <option value="">Оберіть роль</option>
                     <option>Актор</option>
                     <option>Музикант</option>
@@ -188,54 +185,59 @@ export default function ProfilePage() {
                     placeholder="Опиши свої здібності..."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="input w-full border rounded-lg p-2"
+                    className="px-5 py-4 rounded-lg border-[1.5px] border-gray-300 text-base bg-white outline-none transition-all duration-200 ease-linear"
+
                 />
                 <input
                     placeholder="BSC (BEP-20) гаманець або MetaMask"
                     value={wallet}
                     onChange={(e) => setWallet(e.target.value)}
-                    className="input w-full border rounded-lg p-2"
+                    className="px-5 py-4 rounded-lg border-[1.5px] border-gray-300 text-base bg-white outline-none transition-all duration-200 ease-linear"
+
                 />
                 <div className="flex flex-col sm:flex-row gap-2">
-                    <button className="button bg-orange-200 rounded-xl px-4 py-2 font-semibold">
+                    <button
+                        className="bg-[#ffcdd6] text-[#0e0e0e] px-3 py-2 border border-[rgba(0,0,0,0.06)] rounded-full font-bold cursor-pointer shadow-[0_12px_28px_#00000014]">
                         🦊 Підключити MetaMask
                     </button>
-                    <button className="button bg-blue-200 rounded-xl px-4 py-2 font-semibold">
+                    <button
+                        className="bg-[#ffcdd6] text-[#0e0e0e] px-3 py-2 border border-[rgba(0,0,0,0.06)] rounded-full font-bold cursor-pointer shadow-[0_12px_28px_#00000014]">
                         🛡 Пройти KYC
                     </button>
                     <button
                         onClick={handleSaveProfile}
-                        className="button bg-green-200 rounded-xl px-4 py-2 font-semibold"
-                    >
+                        className="bg-[#ffcdd6] text-[#0e0e0e] px-3 py-2 border border-[rgba(0,0,0,0.06)] rounded-full font-bold cursor-pointer shadow-[0_12px_28px_#00000014">
                         💾 Зберегти профіль
                     </button>
                 </div>
             </div>
 
-            <div className="bg-white border rounded-2xl p-4 space-y-3">
-                <h2 className="text-lg font-semibold">Створити сценарій</h2>
+            <div
+                className="flex flex-col gap-5 bg-white max-w-[600px] w-full my-4 mx-auto p-8 rounded-2xl border border-gray-300 shadow-[0_8px_32px_#0000000f]">
+                <h2 className="text-2xl font-bold my-3 mx-0">Створити сценарій</h2>
                 <textarea
-                    placeholder="Опис сценарію"
+                    placeholder="Опиши сценарій"
                     value={scenarioText}
                     onChange={(e) => setScenarioText(e.target.value)}
-                    className="w-full border rounded-lg p-2"
+                    className="px-5 py-4 rounded-lg border-[1.5px] border-gray-300 text-base bg-white outline-none transition-all duration-200 ease-linear"
+
                 />
                 <input
                     type="number"
                     placeholder="Ціна в USDT"
-                    value={scenarioPrice ?? ""}
-                    onChange={(e) => setScenarioPrice(Number(e.target.value))}
-                    className="w-full border rounded-lg p-2"
+                    className="px-5 py-4 pr-10 rounded-lg border-[1.5px] border-gray-300 text-base bg-white outline-none transition-all duration-200 ease-linear w-full"
                 />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+
                 <button
                     onClick={handleSaveScenario}
-                    className="bg-green-200 rounded-xl px-4 py-2 font-semibold"
-                >
+                    className="bg-[#ffcdd6] text-[#0e0e0e] px-3 py-2 border border-[rgba(0,0,0,0.06)] rounded-full font-bold cursor-pointer shadow-[0_12px_28px_#00000014]">
                     Зберегти сценарій
                 </button>
             </div>
-            
-            <div className="bg-white border rounded-2xl p-4 text-center">
+
+            <div
+                className="max-w-[600px] w-full my-8 mx-auto p-8 bg-white rounded-2xl border border-white shadow-[0_18px_40px_#ff83b02e,0_4px_10px_#0000000f]">
                 <h2 className="text-lg font-semibold mb-2">📝 Твої сценарії</h2>
                 <p>📝 Немає сценаріїв</p>
                 <p className="text-sm text-gray-500">Створи перший сценарій у формі вище</p>
