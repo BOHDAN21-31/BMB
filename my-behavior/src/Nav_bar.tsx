@@ -69,7 +69,7 @@ export default function Nav_bar() {
                                 to="/GetScenario"
                                 className="text-sm font-semibold text-black hover:text-[#ffcdd6]"
                             >
-                                Отримати сценарій
+                                Отримати сценарії
                             </Link>
                             <Link
                                 to="/manifestPage"
@@ -168,7 +168,7 @@ export default function Nav_bar() {
                                             to="/GetScenario"
                                             className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-black hover:bg-gray-50"
                                         >
-                                            Отримати сценарій
+                                            Отримати сценарії
                                         </Link>
                                         <Link
                                             to="/manifestPage"

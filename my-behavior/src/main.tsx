@@ -10,6 +10,8 @@ import ProfilePage from "./pages/MyProfile";
 import LiveMap from "./pages/MapPages/Map_Pages";
 import Nav_bar from "./Nav_bar";
 import {AuthProvider} from "./context/AuthProvider";
+import GetScenario from "./pages/GetScenarii";
+import MyOrders from "./pages/MyOrderPages";
 
 // @ts-ignore
 import {registerSW} from "virtual:pwa-register";
@@ -29,7 +31,9 @@ createRoot(container).render(
                     <Route path="/EnterPage" element={<EnterPage/>}/>
                     <Route path="/manifestPage" element={<ManifestPage/>}/>
                     <Route path="/UsProfile" element={<ProfilePage/>}/>
+                    <Route path="/GetScenario" element={<GetScenario/>}/>
                     <Route path="/MapPages" element={<LiveMap/>}/>
+                    <Route path="/MyOrders" element={<MyOrders/>}/>
                 </Routes>
             </AuthProvider>
         </BrowserRouter>
