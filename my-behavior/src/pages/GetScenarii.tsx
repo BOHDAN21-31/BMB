@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {supabase} from "../lib/supabaseClient";
-import {useAuth} from "../context/AuthProvider"; // Переконайтесь, що шлях вірний
+import {useAuth} from "../context/AuthProvider";
 
-// 1. Визначимо тип для даних, які повертає наша RPC-функція
 interface ScenarioWithCreator {
     id: number;
     created_at: string;
@@ -19,11 +18,8 @@ export default function GetScenario() {
     const [scenarios, setScenarios] = useState<ScenarioWithCreator[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
-    // 2. Функція для завантаження всіх сценаріїв
     const fetchScenarios = async () => {
         try {
-            // Викликаємо нашу нову RPC-функцію
             const {data, error} = await supabase.rpc('get_all_scenarios_with_creator');
 
             if (error) throw error;
@@ -37,38 +33,24 @@ export default function GetScenario() {
         }
     };
 
-    // 3. Завантажуємо дані при першому рендері
     useEffect(() => {
         fetchScenarios();
 
-        // 4. Встановлюємо Realtime-підписку
         const channel = supabase
             .channel('public:scenarios')
             .on(
                 'postgres_changes',
                 {event: 'INSERT', schema: 'public', table: 'scenarios'},
                 (payload) => {
-                    // Коли хтось створює новий сценарій...
                     console.log('Новий сценарій!', payload.new);
-
-                    // Найпростіший спосіб оновити список з JOIN-даними -
-                    // це просто перезавантажити всі сценарії.
                     fetchScenarios();
-
-                    // (Більш складний, але швидший метод -
-                    // отримати 'payload.new', окремо запитати профіль
-                    // і додати в 'setScenarios')
                 }
             )
             .subscribe();
-
-        // 5. Не забуваємо відписатися при "розмонтуванні"
         return () => {
             supabase.removeChannel(channel);
         };
     }, []);
-
-    // 6. Функція для "Прийняття" (створення замовлення)
     const handleAccept = async (scenario: ScenarioWithCreator) => {
         if (!user) {
             alert("Будь ласка, увійдіть, щоб прийняти сценарій.");
@@ -86,7 +68,7 @@ export default function GetScenario() {
                 .insert({
                     scenario_id: scenario.id,
                     customer_id: user.id,
-                    status: 'pending' // Початковий статус
+                    status: 'pending'
                 });
 
             if (error) throw error;
@@ -132,7 +114,6 @@ export default function GetScenario() {
     );
 }
 
-// 7. Окремий компонент "Картка Сценарію" для чистоти коду
 interface ScenarioCardProps {
     scenario: ScenarioWithCreator;
     onAccept: () => void;
@@ -146,7 +127,6 @@ const ScenarioCard: React.FC<ScenarioCardProps> = ({scenario, onAccept, currentU
     return (
         <div className="bg-white border border-gray-200 rounded-lg shadow-md p-5 flex flex-col justify-between">
             <div>
-                {/* Інформація про творця */}
                 <div className="flex items-center mb-3">
                     <img
                         src={scenario.creator_avatar || '/logo_for_reg.jpg'} // Запасне фото
@@ -158,12 +138,9 @@ const ScenarioCard: React.FC<ScenarioCardProps> = ({scenario, onAccept, currentU
                     </span>
                 </div>
 
-                {/* Інформація про сценарій */}
                 <h2 className="text-xl font-semibold mb-2">{scenario.title}</h2>
                 <p className="text-gray-600 mb-4">{scenario.description}</p>
             </div>
-
-            {/* Ціна та Кнопка */}
             <div className="flex justify-between items-center mt-4">
                 <span className="text-2xl font-bold text-green-600">
                     ${scenario.price.toLocaleString()}
@@ -171,7 +148,7 @@ const ScenarioCard: React.FC<ScenarioCardProps> = ({scenario, onAccept, currentU
 
                 <button
                     onClick={onAccept}
-                    disabled={isOwner} // Блокуємо кнопку, якщо це ваш сценарій
+                    disabled={isOwner}
                     className={`
                         px-4 py-2 rounded-lg font-semibold text-white transition-colors
                         ${isOwner

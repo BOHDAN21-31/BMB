@@ -69,7 +69,6 @@ const Manifest: React.FC = () => {
             </header>
 
             <main className="max-w-6xl mx-auto px-5 py-6 space-y-6">
-                {/* Що таке BMB */}
                 <section className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-4">
                     <h2 className="text-2xl font-extrabold">Що таке BMB</h2>
                     <div className="space-y-3 text-sm sm:text-base leading-relaxed">
@@ -94,8 +93,6 @@ const Manifest: React.FC = () => {
                         </p>
                     </div>
                 </section>
-
-                {/* Як це працює + Замовлення */}
                 <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-3">
                         <h2 className="text-2xl font-extrabold">Як це працює</h2>
@@ -117,8 +114,6 @@ const Manifest: React.FC = () => {
                         </ul>
                     </div>
                 </section>
-
-                {/* Елемент спору */}
                 <section className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-3">
                     <h2 className="text-2xl font-extrabold">Елемент спору</h2>
                     <p className="text-sm sm:text-base leading-relaxed">
@@ -141,8 +136,6 @@ const Manifest: React.FC = () => {
                         </div>
                     </div>
                 </section>
-
-                {/* Амбасадори */}
                 <section className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-4">
                     <h2 className="text-2xl font-extrabold">Амбасадори</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -173,16 +166,12 @@ const Manifest: React.FC = () => {
                         </div>
                     </div>
                 </section>
-
-                {/* Відкритий код */}
                 <section className="bg-white border border-gray-200 rounded-2xl shadow-md p-6">
                     <h2 className="text-2xl font-extrabold">Відкритий код</h2>
                     <p className="text-sm sm:text-base leading-relaxed">
                         Buy My Behavior створений з відкритим кодом...
                     </p>
                 </section>
-
-                {/* Застереження */}
                 <section className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-3">
                     <h2 className="text-2xl font-extrabold">Застереження</h2>
                     <ul className="list-disc list-inside space-y-2 text-sm sm:text-base leading-relaxed">
