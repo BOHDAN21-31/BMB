@@ -3,6 +3,24 @@ import {supabase} from "../lib/supabaseClient";
 import {useAuth} from "../context/AuthProvider";
 import type {Profile, Scenario} from "../types/database.types";
 
+const ROLES = [
+    "Актор",
+    "Музикант",
+    "Авантюрист",
+    "Платонічний Ескорт",
+    "Хейтер",
+    "Танцівник",
+    "Бодібілдер-охоронець",
+    "Філософ",
+    "Провидець на виїзді",
+    "Репортер",
+    "Пранкер",
+    "Лицедій (імпровізатор)",
+    "Артист дії",
+    "Інфлюенсер",
+    "Інше"
+];
+
 export default function ProfilePage() {
     const {user} = useAuth();
     const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -37,7 +55,6 @@ export default function ProfilePage() {
                 setRole(data.role || "");
                 setDescription(data.bio || "");
                 setIsLocationPublic(data.is_location_public || false);
-
             }
         } catch (error: any) {
             alert("Помилка завантаження профілю: " + error.message);
@@ -74,7 +91,6 @@ export default function ProfilePage() {
 
         try {
             const updates = {
-
                 display_name: displayName,
                 role: role,
                 bio: bio,
@@ -167,6 +183,25 @@ export default function ProfilePage() {
         }
     };
 
+    const handleDeleteScenario = async (scenarioId: number) => {
+        if (!confirm("Ви впевнені, що хочете видалити цей сценарій?")) return;
+
+        try {
+            const {error} = await supabase
+                .from("scenarios")
+                .delete()
+                .eq("id", scenarioId);
+
+            if (error) throw error;
+
+            // Оновлюємо локальний стан, прибираючи видалений елемент
+            setMyScenarios((prev) => prev.filter((item) => item.id !== scenarioId));
+
+        } catch (error: any) {
+            alert("Помилка видалення: " + error.message);
+        }
+    };
+
     const handleGeoToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const enabled = e.target.checked;
         setIsLocationPublic(enabled);
@@ -212,7 +247,16 @@ export default function ProfilePage() {
 
             <div className="flex flex-col items-center">
                 <div
-                    className="flex flex-col items-center justify-center w-[180px] h-[180px] rounded-full border-2 border-dashed border-slate-300 bg-white gap-2 text-slate-500 transition-all duration-300 ease-linear overflow-hidden"
+                    className={`
+                        flex flex-col items-center justify-center 
+                        w-[180px] h-[180px] rounded-full 
+                        bg-white gap-2 text-slate-500 
+                        transition-all duration-300 ease-linear overflow-hidden
+                        ${avatarUrl
+                        ? "border-[4px] border-[#ffcdd6] shadow-lg border-solid"
+                        : "border-2 border-dashed border-slate-300"
+                    }
+                    `}
                     onClick={() => fileInputRef.current?.click()}
                 >
                     {avatarUrl ? (
@@ -267,12 +311,20 @@ export default function ProfilePage() {
                     onChange={(e) => setDisplayName(e.target.value)}
                     className="px-5 py-4 rounded-lg border-[1.5px] border-gray-300 text-base bg-white outline-none transition-all duration-200 ease-linear"
                 />
+
                 <select
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
-                    className="px-5 py-4 rounded-lg border-[1.5px] border-gray-300 text-base bg-white outline-none transition-all duration-200 ease-linear">
-
+                    className="px-5 py-4 rounded-lg border-[1.5px] border-gray-300 text-base bg-white outline-none transition-all duration-200 ease-linear"
+                >
+                    <option value="">Оберіть роль</option>
+                    {ROLES.map((roleName) => (
+                        <option key={roleName} value={roleName}>
+                            {roleName}
+                        </option>
+                    ))}
                 </select>
+
                 <textarea
                     placeholder="Опиши свої здібності..."
                     value={bio}
@@ -336,17 +388,36 @@ export default function ProfilePage() {
                         </p>
                     </>
                 ) : (
-                    <ul className="space-y-2">
+                    <ul className="space-y-3">
                         {myScenarios.map((scenario) => (
                             <li
                                 key={scenario.id}
-                                className="p-2 border rounded-md"
+                                className="flex justify-between items-start p-3 border border-gray-200 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
                             >
-                                <h3 className="font-bold">{scenario.title}</h3>
-                                <p>{scenario.description}</p>
-                                <span className="text-green-600">
-                                    {scenario.price} USDT
-                                </span>
+                                <div className="flex-1 pr-2">
+                                    <h3 className="font-bold text-gray-900">{scenario.title}</h3>
+                                    <p className="text-sm text-gray-600 line-clamp-2">{scenario.description}</p>
+                                    <span
+                                        className="text-xs font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full mt-1 inline-block">
+                                        {scenario.price} USDT
+                                    </span>
+                                </div>
+
+                                <button
+                                    onClick={() => handleDeleteScenario(scenario.id)}
+                                    title="Видалити сценарій"
+                                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-white rounded-full transition-all"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+                                         strokeLinejoin="round">
+                                        <path d="M3 6h18"></path>
+                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    </svg>
+                                </button>
                             </li>
                         ))}
                     </ul>
