@@ -2,9 +2,9 @@ import React, {useState, useEffect} from "react";
 import Map, {Marker} from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import {supabase} from "../../lib/supabaseClient";
-import {useNavigate} from "react-router-dom"; // 1. Імпорт для навігації
+import {useNavigate} from "react-router-dom";
+import Nav_bar from "../../Nav_bar"; // <--- 1. Імпорт Навбару
 
-// Токен Mapbox
 const MAPBOX_TOKEN = "pk.eyJ1IjoiYnV5bXliaWhhdmlvciIsImEiOiJjbWM4MzU3cDQxZGJ0MnFzM3NnOHhnaWM4In0.wShhGG9EvmIVxcHjBHImXw";
 
 interface MapUser {
@@ -28,7 +28,7 @@ interface UserScenario {
 }
 
 export default function LiveMap() {
-    const navigate = useNavigate(); // 2. Ініціалізація хука
+    const navigate = useNavigate();
     const [users, setUsers] = useState<MapUser[]>([]);
     const [selectedUser, setSelectedUser] = useState<FullProfile | null>(null);
     const [userScenarios, setUserScenarios] = useState<UserScenario[]>([]);
@@ -93,6 +93,11 @@ export default function LiveMap() {
     return (
         <div className="fixed inset-0 h-[100dvh] w-full overflow-hidden bg-gray-100 overscroll-none touch-none">
 
+            {/* 2. ДОДАНО NAV_BAR (плаваючий зверху) */}
+            <div className="absolute top-0 left-0 w-full z-40 pointer-events-auto">
+                <Nav_bar/>
+            </div>
+
             <Map
                 mapboxAccessToken={MAPBOX_TOKEN}
                 initialViewState={{
@@ -116,7 +121,6 @@ export default function LiveMap() {
                             className="cursor-pointer transition-transform hover:scale-110 active:scale-95 relative"
                             onClick={(e) => handleMarkerClick(u.id, e)}
                         >
-                            {/* 4. Стилі Аватара на карті: Біла рамка + Рожева підсвітка */}
                             <div className="rounded-full shadow-[0_0_15px_#ffcdd6]">
                                 <img
                                     src={u.avatar_url || "/logo_for_reg.jpg"}
@@ -160,7 +164,6 @@ export default function LiveMap() {
                     ) : selectedUser ? (
                         <div className="flex flex-col p-6">
 
-                            {/* 5. Аватар у сайдбарі: Ті самі стилі (біла рамка + підсвітка) */}
                             <div className="flex justify-center mb-4 mt-4">
                                 <div className="w-28 h-28 rounded-full shadow-[0_0_20px_#ffcdd6]">
                                     <img
@@ -192,7 +195,6 @@ export default function LiveMap() {
                                 </div>
                             </div>
 
-                            {/* 6. Блок "Здібності" (Bio): СІРИЙ ФОН замість чорного */}
                             <div className="flex justify-center mb-8">
                                 <div
                                     className="bg-gray-100 text-gray-800 px-5 py-4 rounded-2xl text-sm font-medium shadow-sm border border-gray-200 text-center leading-relaxed w-full">
