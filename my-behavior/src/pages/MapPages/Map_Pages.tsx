@@ -2,7 +2,9 @@ import React, {useState, useEffect} from "react";
 import Map, {Marker} from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import {supabase} from "../../lib/supabaseClient";
+import {useNavigate} from "react-router-dom"; // 1. Імпорт для навігації
 
+// Токен Mapbox
 const MAPBOX_TOKEN = "pk.eyJ1IjoiYnV5bXliaWhhdmlvciIsImEiOiJjbWM4MzU3cDQxZGJ0MnFzM3NnOHhnaWM4In0.wShhGG9EvmIVxcHjBHImXw";
 
 interface MapUser {
@@ -26,6 +28,7 @@ interface UserScenario {
 }
 
 export default function LiveMap() {
+    const navigate = useNavigate(); // 2. Ініціалізація хука
     const [users, setUsers] = useState<MapUser[]>([]);
     const [selectedUser, setSelectedUser] = useState<FullProfile | null>(null);
     const [userScenarios, setUserScenarios] = useState<UserScenario[]>([]);
@@ -81,8 +84,14 @@ export default function LiveMap() {
         setSelectedUser(null);
     };
 
+    const handleOrderClick = () => {
+        if (selectedUser) {
+            navigate('/create-order', {state: {performerId: selectedUser.id}});
+        }
+    };
+
     return (
-        <div className="h-screen w-full relative overflow-hidden bg-gray-100">
+        <div className="fixed inset-0 h-[100dvh] w-full overflow-hidden bg-gray-100 overscroll-none touch-none">
 
             <Map
                 mapboxAccessToken={MAPBOX_TOKEN}
@@ -104,14 +113,17 @@ export default function LiveMap() {
                         anchor="center"
                     >
                         <div
-                            className="cursor-pointer transition-transform hover:scale-110 active:scale-95"
+                            className="cursor-pointer transition-transform hover:scale-110 active:scale-95 relative"
                             onClick={(e) => handleMarkerClick(u.id, e)}
                         >
-                            <img
-                                src={u.avatar_url || "/logo_for_reg.jpg"}
-                                alt={u.display_name}
-                                className="w-12 h-12 rounded-full border-2 border-white shadow-lg object-cover"
-                            />
+                            {/* 4. Стилі Аватара на карті: Біла рамка + Рожева підсвітка */}
+                            <div className="rounded-full shadow-[0_0_15px_#ffcdd6]">
+                                <img
+                                    src={u.avatar_url || "/logo_for_reg.jpg"}
+                                    alt={u.display_name}
+                                    className="w-12 h-12 rounded-full border-[3px] border-white object-cover"
+                                />
+                            </div>
                         </div>
                     </Marker>
                 ))}
@@ -147,12 +159,14 @@ export default function LiveMap() {
                         </div>
                     ) : selectedUser ? (
                         <div className="flex flex-col p-6">
+
+                            {/* 5. Аватар у сайдбарі: Ті самі стилі (біла рамка + підсвітка) */}
                             <div className="flex justify-center mb-4 mt-4">
-                                <div className="w-28 h-28 rounded-full p-1 border-2 border-gray-100 shadow-sm">
+                                <div className="w-28 h-28 rounded-full shadow-[0_0_20px_#ffcdd6]">
                                     <img
                                         src={selectedUser.avatar_url || "/logo_for_reg.jpg"}
                                         alt="Profile"
-                                        className="w-full h-full rounded-full object-cover"
+                                        className="w-full h-full rounded-full border-[4px] border-white object-cover"
                                     />
                                 </div>
                             </div>
@@ -177,18 +191,23 @@ export default function LiveMap() {
                                     </button>
                                 </div>
                             </div>
+
+                            {/* 6. Блок "Здібності" (Bio): СІРИЙ ФОН замість чорного */}
                             <div className="flex justify-center mb-8">
                                 <div
-                                    className="bg-[#1e2329] text-white px-5 py-4 rounded-2xl text-sm font-medium shadow-md text-center leading-relaxed w-full">
+                                    className="bg-gray-100 text-gray-800 px-5 py-4 rounded-2xl text-sm font-medium shadow-sm border border-gray-200 text-center leading-relaxed w-full">
                                     {selectedUser.bio ? (
                                         <>
                                             <span
-                                                className="block text-gray-400 text-[10px] uppercase tracking-wider mb-2">Здібності</span>
+                                                className="block text-gray-400 text-[10px] uppercase tracking-wider mb-2">
+                                                Здібності
+                                            </span>
                                             “{selectedUser.bio}”
                                         </>
                                     ) : (
-                                        <span
-                                            className="text-gray-400 italic">Користувач ще не описав свої здібності...</span>
+                                        <span className="text-gray-400 italic">
+                                            Користувач ще не описав свої здібності...
+                                        </span>
                                     )}
                                 </div>
                             </div>
@@ -225,6 +244,7 @@ export default function LiveMap() {
 
                             <div className="mt-8 mb-[25px]">
                                 <button
+                                    onClick={handleOrderClick}
                                     className="w-full bg-black text-white font-bold py-4 rounded-full text-lg shadow-xl hover:bg-gray-800 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
                                     <span>Замовити поведінку</span>
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

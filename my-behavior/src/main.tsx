@@ -15,6 +15,7 @@ import MyOrders from "./pages/MyOrderPages";
 
 // @ts-ignore
 import {registerSW} from "virtual:pwa-register";
+import CreateOrderPage from "./pages/Order/Order-creat";
 
 registerSW({immediate: true});
 
@@ -34,6 +35,7 @@ createRoot(container).render(
                     <Route path="/GetScenario" element={<GetScenario/>}/>
                     <Route path="/MapPages" element={<LiveMap/>}/>
                     <Route path="/MyOrders" element={<MyOrders/>}/>
+                    <Route path="/create-order" element={<CreateOrderPage/>}/>
                 </Routes>
             </AuthProvider>
         </BrowserRouter>

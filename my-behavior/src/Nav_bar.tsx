@@ -27,8 +27,8 @@ export default function Nav_bar() {
             >
                 <div className="flex lg:flex-1">
                     <Link to="/manifestPage" className="-m-1.5 p-1.5">
-                        <span className="sr-only">By My Behavior</span>
-                        <h1 className="text-black text-xl font-bold">By my Behavior</h1>
+                        <span className="sr-only">Buy My Behavior</span>
+                        <h1 className="text-black text-xl font-bold">Buy my Behavior</h1>
                     </Link>
                 </div>
 
@@ -129,8 +129,8 @@ export default function Nav_bar() {
                 >
                     <div className="flex items-center justify-between">
                         <Link to="/manifestPage" className="-m-1.5 p-1.5">
-                            <span className="sr-only">By my Behavior</span>
-                            <h1 className="text-black text-xl font-bold">By my Behavior</h1>
+                            <span className="sr-only">Buy my Behavior</span>
+                            <h1 className="text-black text-xl font-bold">Buy my Behavior</h1>
                         </Link>
                         <button
                             type="button"

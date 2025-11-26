@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
+    "@metamask/sdk": "^0.34.0",
     "@supabase/supabase-js": "^2.79.0",
     "@tailwindcss/vite": "^4.1.16",
     "antd": "^5.27.6",
+    "ethers": "^6.15.0",
     "mapbox-gl": "^3.16.0",
     "maplibre-gl": "^5.10.0",
     "react-map-gl": "^8.1.0",
