@@ -67,17 +67,15 @@ export default function CreateOrderPage() {
     }, [performerId]);
 
     // --- ВАЛІДАЦІЯ ДАТИ ТА ЧАСУ ---
-
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value;
-        // Якщо користувач стирає дату - дозволяємо, але при введені перевіряємо
         if (!val) {
             setDate("");
             return;
         }
         if (val < today) {
             alert("Не можна обрати минулу дату!");
-            setDate(today); // Скидаємо на сьогодні
+            setDate(today);
         } else if (val > maxDate) {
             alert("Дата не може бути більше ніж через рік!");
             setDate(maxDate);
@@ -92,24 +90,20 @@ export default function CreateOrderPage() {
             setTime("");
             return;
         }
-
-        // Якщо обрана дата - сьогодні, перевіряємо час
         if (date === today) {
             const now = new Date();
-            // Форматуємо поточний час у HH:MM
             const currentHours = now.getHours().toString().padStart(2, '0');
             const currentMinutes = now.getMinutes().toString().padStart(2, '0');
             const currentTime = `${currentHours}:${currentMinutes}`;
 
             if (val < currentTime) {
                 alert("Цей час вже минув!");
-                setTime(currentTime); // Скидаємо на поточний час
+                setTime(currentTime);
                 return;
             }
         }
         setTime(val);
     };
-    // ------------------------------
 
     const onMapClick = (e: any) => {
         const {lng, lat} = e.lngLat;
@@ -120,6 +114,7 @@ export default function CreateOrderPage() {
         setIsMapOpen(false);
     };
 
+    // --- ЛОГІКА ОПЛАТИ ---
     const processPayment = async (amount: number): Promise<string | null> => {
         if (!window.ethereum) {
             alert("Будь ласка, встановіть MetaMask!");
@@ -149,6 +144,7 @@ export default function CreateOrderPage() {
         }
     };
 
+    // --- ВІДПРАВКА ЗАМОВЛЕННЯ ---
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!user || !performerId) return;
@@ -156,8 +152,9 @@ export default function CreateOrderPage() {
             alert("Будь ласка, оберіть місце на карті!");
             return;
         }
-        if (!price || Number(price) <= 0) {
-            alert("Вкажіть суму внеску.");
+        // Перевірка, що ціна не від'ємна
+        if (price === "" || Number(price) < 0) {
+            alert("Вкажіть коректну суму (0 для безкоштовно).");
             return;
         }
         if (!date || !time) {
@@ -168,29 +165,41 @@ export default function CreateOrderPage() {
         setLoading(true);
 
         try {
-            const txHash = await processPayment(Number(price));
+            const numericPrice = Number(price);
+            let orderStatus = 'pending_execution'; // Статус за замовчуванням (для безкоштовних)
 
-            if (!txHash) {
-                setLoading(false);
-                setStatusMessage("");
-                return;
+            // КРОК 1: ОПЛАТА (ТІЛЬКИ ЯКЩО ЦІНА > 0)
+            if (numericPrice > 0) {
+                const txHash = await processPayment(numericPrice);
+
+                if (!txHash) {
+                    setLoading(false);
+                    setStatusMessage("");
+                    return; // Зупиняємось, якщо оплата не пройшла
+                }
+                orderStatus = 'paid_pending_execution'; // Змінюємо статус на "Оплачено"
+            } else {
+                // Якщо 0 - просто пропускаємо етап оплати
+                console.log("Безкоштовне замовлення, пропускаємо MetaMask");
             }
 
             setStatusMessage("Створюємо замовлення...");
 
+            // КРОК 2: СЦЕНАРІЙ
             const {data: scenarioData, error: scenarioError} = await supabase
                 .from("scenarios")
                 .insert({
                     creator_id: user.id,
                     title: title,
                     description: description,
-                    price: Number(price),
+                    price: numericPrice,
                 })
                 .select()
                 .single();
 
             if (scenarioError) throw scenarioError;
 
+            // КРОК 3: ЗАМОВЛЕННЯ
             const executionDateTime = new Date(`${date}T${time}`).toISOString();
 
             const {error: orderError} = await supabase
@@ -199,14 +208,18 @@ export default function CreateOrderPage() {
                     scenario_id: scenarioData.id,
                     customer_id: user.id,
                     performer_id: performerId,
-                    status: 'paid_pending_execution',
+                    status: orderStatus, // <-- Використовуємо динамічний статус
                     execution_time: executionDateTime,
                     location_coords: `POINT(${selectedCoords.lng} ${selectedCoords.lat})`,
                 });
 
             if (orderError) throw orderError;
 
-            alert("✅ Оплата пройшла успішно! Замовлення надіслано.");
+            alert(numericPrice > 0
+                ? "✅ Оплата успішна! Замовлення надіслано."
+                : "✅ Замовлення надіслано (безкоштовно)!"
+            );
+
             navigate("/my-orders");
 
         } catch (error: any) {
@@ -235,7 +248,7 @@ export default function CreateOrderPage() {
             {/* --- MAIN CONTENT --- */}
             <div className="max-w-2xl mx-auto p-6">
 
-                {/* Інфо про виконавця (З ПІДСВІТКОЮ) */}
+                {/* Інфо про виконавця */}
                 <div
                     className="bg-white p-4 rounded-2xl border border-white mb-6 flex items-center gap-4
                     shadow-[0_0_20px_rgba(255,205,214,0.6)]"
@@ -255,6 +268,21 @@ export default function CreateOrderPage() {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
+
+                    {/* Назва */}
+                    <div className="space-y-1">
+                        <label className="text-sm font-semibold text-gray-700 ml-1">Назва</label>
+                        <input
+                            type="text"
+                            required
+                            placeholder="Коротко про завдання..."
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            className="w-full px-5 py-4 rounded-xl border border-gray-200 bg-white text-gray-800
+                                       focus:outline-none focus:border-[#ffcdd6] focus:ring-4 focus:ring-[#ffcdd6]/30
+                                       shadow-[0_0_15px_rgba(255,205,214,0.4)] transition-all"
+                        />
+                    </div>
 
                     {/* Опис */}
                     <div className="space-y-1">
@@ -279,6 +307,7 @@ export default function CreateOrderPage() {
                                 type="number"
                                 required
                                 placeholder="0.00"
+                                min="0" // Дозволяє 0
                                 value={price}
                                 onChange={(e) => setPrice(Number(e.target.value))}
                                 className="w-full px-5 py-4 rounded-xl border border-gray-200 bg-white text-gray-800
@@ -288,9 +317,11 @@ export default function CreateOrderPage() {
                             <span
                                 className="absolute right-5 top-4 text-green-600 font-bold text-sm">USDT (BEP20)</span>
                         </div>
-                        <p className="text-[10px] text-gray-400 ml-1">
-                            * Кошти будуть заморожені до підтвердження виконання
-                        </p>
+                        <div className="flex justify-between items-center ml-1 mt-1">
+                            <p className="text-[10px] text-gray-400">
+                                * 0 = Безкоштовно. Кошти 0 заморожуються.
+                            </p>
+                        </div>
                     </div>
 
                     {/* Дата і Час */}
@@ -303,7 +334,7 @@ export default function CreateOrderPage() {
                                 min={today}
                                 max={maxDate}
                                 value={date}
-                                onChange={handleDateChange} // <-- Використовуємо нову функцію валідації
+                                onChange={handleDateChange}
                                 className="w-full px-4 py-4 rounded-xl border border-gray-200 bg-white text-gray-800
                                            focus:outline-none focus:border-[#ffcdd6] focus:ring-4 focus:ring-[#ffcdd6]/30
                                            shadow-[0_0_15px_rgba(255,205,214,0.4)] transition-all"
@@ -315,7 +346,7 @@ export default function CreateOrderPage() {
                                 type="time"
                                 required
                                 value={time}
-                                onChange={handleTimeChange} // <-- Використовуємо нову функцію валідації
+                                onChange={handleTimeChange}
                                 className="w-full px-4 py-4 rounded-xl border border-gray-200 bg-white text-gray-800
                                            focus:outline-none focus:border-[#ffcdd6] focus:ring-4 focus:ring-[#ffcdd6]/30
                                            shadow-[0_0_15px_rgba(255,205,214,0.4)] transition-all"

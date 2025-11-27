@@ -199,14 +199,32 @@ export default function ProfilePage() {
 
         if (enabled) {
             try {
+                // Додаємо опції для кращого пошуку
+                const options = {
+                    enableHighAccuracy: true, // Вимагати точний GPS
+                    timeout: 15000,           // Чекати до 15 секунд (було замало)
+                    maximumAge: 0             // Не використовувати старий кеш
+                };
+
                 const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-                    navigator.geolocation.getCurrentPosition(resolve, reject);
+                    navigator.geolocation.getCurrentPosition(resolve, reject, options);
                 });
+
                 const {longitude, latitude} = position.coords;
+                console.log("Отримано координати:", latitude, longitude); // Для дебагу
+
                 updates.location = `POINT(${longitude} ${latitude})`;
-            } catch (error) {
-                alert("Не вдалось отримати геолокацію.");
-                setIsLocationPublic(false);
+            } catch (error: any) {
+                console.error("Geo Error:", error);
+
+                // Більш зрозуміле повідомлення про помилку
+                let msg = "Не вдалось отримати геолокацію.";
+                if (error.code === 1) msg = "Доступ до геолокації заборонено. Дозвольте у налаштуваннях.";
+                if (error.code === 2) msg = "Позиція недоступна (перевірте GPS/Wi-Fi).";
+                if (error.code === 3) msg = "Час очікування геолокації вийшов.";
+
+                alert(msg);
+                setIsLocationPublic(false); // Вимикаємо перемикач назад
                 return;
             }
         } else {
@@ -217,7 +235,8 @@ export default function ProfilePage() {
             const {error} = await supabase.from("profiles").update(updates).eq("id", user.id);
             if (error) throw error;
         } catch (error: any) {
-            alert("Помилка: " + error.message);
+            alert("Помилка збереження: " + error.message);
+            setIsLocationPublic(false);
         }
     };
 
