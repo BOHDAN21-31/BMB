@@ -247,7 +247,7 @@ export default function LiveMap() {
                             <div className="mt-8 mb-[25px]">
                                 <button
                                     onClick={handleOrderClick}
-                                    className="w-full bg-black text-white font-bold py-4 rounded-full text-lg shadow-xl hover:bg-gray-800 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                                    className="w-full bg-[#ffcdd6] text-[#0e0e0e] font-bold py-4 rounded-full text-lg shadow-xl hover:bg-rgba(0,0,0,0.06) active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-md hover:brightness-95 transition-all">
                                     <span>Замовити поведінку</span>
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"

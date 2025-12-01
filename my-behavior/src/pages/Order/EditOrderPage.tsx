@@ -345,7 +345,7 @@ export default function EditOrderPage() {
                 <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="w-full py-4 rounded-2xl bg-black text-white font-bold text-lg shadow-[0_10px_30px_-5px_rgba(0,0,0,0.3)] hover:bg-gray-800 active:scale-[0.98] transition-all"
+                    className="w-full bg-[#ffcdd6] text-[#0e0e0e] px-3 py-3 border border-[rgba(0,0,0,0.06)] rounded-full font-bold cursor-pointer shadow-md hover:brightness-95 transition-all"
                 >
                     {saving ? "Збереження..." : "Зберегти зміни"}
                 </button>

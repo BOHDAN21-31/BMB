@@ -96,7 +96,7 @@ export default function MyOrdersPage() {
                     <button
                         onClick={() => setActiveTab('in_progress')}
                         className={`flex-1 py-3 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
-                            activeTab === 'in_progress' ? 'bg-black text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'
+                            activeTab === 'in_progress' ? 'bg-[#ffcdd6] text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'
                         }`}
                     >
                         В роботі ⚡️
@@ -108,14 +108,6 @@ export default function MyOrdersPage() {
                         }`}
                     >
                         Виконані ✅
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('my_requests')}
-                        className={`flex-1 py-3 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
-                            activeTab === 'my_requests' ? 'bg-blue-500 text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'
-                        }`}
-                    >
-                        Я замовив 👤
                     </button>
                 </div>
 
@@ -147,7 +139,6 @@ const OrderCard: React.FC<{ order: OrderItem, navigate: any, isCustomerTab: bool
                                                                                           }) => {
 
     const handleClick = () => {
-        // Disable click if it's the customer tab
         if (isCustomerTab) return;
 
         const requestFormat = {

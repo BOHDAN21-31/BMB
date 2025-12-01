@@ -434,7 +434,7 @@ export default function OrderDetailsPage() {
                             <button
                                 onClick={handleComplete}
                                 disabled={loadingAction}
-                                className="flex-[2] py-3 bg-green-500 text-white rounded-xl font-bold shadow-lg hover:bg-green-600 transition-colors"
+                                className="flex-[2] py-3 bg-[#ffcdd6] text-[#0e0e0e] rounded-xl font-bold hover:bg-[rgba(0,0,0,0.06)] transition-colors shadow-md hover:brightness-95"
                             >
                                 {loadingAction ? "..." : "✅ Завершити"}
                             </button>
