@@ -14,9 +14,8 @@ declare global {
 
 const MAPBOX_TOKEN = "pk.eyJ1IjoiYnV5bXliaWhhdmlvciIsImEiOiJjbWM4MzU3cDQxZGJ0MnFzM3NnOHhnaWM4In0.wShhGG9EvmIVxcHjBHImXw";
 
-// --- КОНФІГУРАЦІЯ БЛОКЧЕЙНУ ---
-const USDT_CONTRACT_ADDRESS = "0x55d398326f99059fF775485246999027B3197955";
-const ESCROW_WALLET_ADDRESS = "0xВАША_АДРЕСА_ГАМАНЦЯ_ПЛАТФОРМИ";
+export const USDT_CONTRACT_ADDRESS = import.meta.env.VITE_USDT_CONTRACT_ADDRESS as string;
+export const ESCROW_WALLET_ADDRESS = import.meta.env.VITE_ESCROW_WALLET_ADDRESS as string;
 
 const ERC20_ABI = [
     "function transfer(address to, uint256 amount) returns (bool)"
@@ -126,9 +125,14 @@ export default function CreateOrderPage() {
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
             const usdtContract = new ethers.Contract(USDT_CONTRACT_ADDRESS, ERC20_ABI, signer);
+
+            // USDT в BSC має 18 знаків після коми
             const amountInWei = ethers.parseUnits(amount.toString(), 18);
 
             setStatusMessage("Підтвердіть транзакцію в гаманці...");
+
+            // Відправляємо гроші на ГАМАНЕЦЬ ПЛАТФОРМИ (ESCROW)
+            // Вони будуть лежати там, поки бекенд не розподілить їх (90/5/5)
             const tx = await usdtContract.transfer(ESCROW_WALLET_ADDRESS, amountInWei);
 
             setStatusMessage("Транзакція відправлена. Чекаємо підтвердження...");
@@ -152,7 +156,6 @@ export default function CreateOrderPage() {
             alert("Будь ласка, оберіть місце на карті!");
             return;
         }
-        // Перевірка, що ціна не від'ємна
         if (price === "" || Number(price) < 0) {
             alert("Вкажіть коректну суму (0 для безкоштовно).");
             return;
@@ -166,26 +169,33 @@ export default function CreateOrderPage() {
 
         try {
             const numericPrice = Number(price);
-            let orderStatus = 'pending_execution'; // Статус за замовчуванням (для безкоштовних)
+            let orderStatus = 'pending_execution';
+            let txHash = null;
 
-            // КРОК 1: ОПЛАТА (ТІЛЬКИ ЯКЩО ЦІНА > 0)
+            // 1. ОПЛАТА
             if (numericPrice > 0) {
-                const txHash = await processPayment(numericPrice);
+                txHash = await processPayment(numericPrice);
 
                 if (!txHash) {
                     setLoading(false);
                     setStatusMessage("");
-                    return; // Зупиняємось, якщо оплата не пройшла
+                    return;
                 }
-                orderStatus = 'paid_pending_execution'; // Змінюємо статус на "Оплачено"
-            } else {
-                // Якщо 0 - просто пропускаємо етап оплати
-                console.log("Безкоштовне замовлення, пропускаємо MetaMask");
+                orderStatus = 'paid_pending_execution';
             }
 
-            setStatusMessage("Створюємо замовлення...");
+            // 2. ОТРИМУЄМО РЕФЕРЕРА (хто привів мене?)
+            // Припускаємо, що в профілі є поле invited_by
+            const {data: myProfile} = await supabase
+                .from('profiles')
+                .select('invited_by')
+                .eq('id', user.id)
+                .single();
 
-            // КРОК 2: СЦЕНАРІЙ
+            const referrerId = myProfile?.invited_by || null;
+
+            // 3. СТВОРЕННЯ СЦЕНАРІЮ
+            setStatusMessage("Створюємо замовлення...");
             const {data: scenarioData, error: scenarioError} = await supabase
                 .from("scenarios")
                 .insert({
@@ -199,7 +209,7 @@ export default function CreateOrderPage() {
 
             if (scenarioError) throw scenarioError;
 
-            // КРОК 3: ЗАМОВЛЕННЯ
+            // 4. СТВОРЕННЯ ЗАМОВЛЕННЯ (з даними про виплату)
             const executionDateTime = new Date(`${date}T${time}`).toISOString();
 
             const {error: orderError} = await supabase
@@ -208,19 +218,28 @@ export default function CreateOrderPage() {
                     scenario_id: scenarioData.id,
                     customer_id: user.id,
                     performer_id: performerId,
-                    status: orderStatus, // <-- Використовуємо динамічний статус
+                    status: orderStatus,
                     execution_time: executionDateTime,
                     location_coords: `POINT(${selectedCoords.lng} ${selectedCoords.lat})`,
+
+                    // Зберігаємо важливі дані для бекенду:
+                    transaction_hash: txHash,
+                    payout_details: {
+                        performer_amount: numericPrice * 0.90, // 90%
+                        platform_amount: numericPrice * 0.05,  // 5%
+                        referrer_amount: numericPrice * 0.05,  // 5%
+                        referrer_id: referrerId
+                    }
                 });
 
             if (orderError) throw orderError;
 
             alert(numericPrice > 0
-                ? "✅ Оплата успішна! Замовлення надіслано."
+                ? "✅ Оплата успішна! Кошти заморожено. Замовлення надіслано."
                 : "✅ Замовлення надіслано (безкоштовно)!"
             );
 
-            navigate("/my-orders");
+            navigate("/MapPages");
 
         } catch (error: any) {
             console.error("Error:", error);
@@ -319,7 +338,7 @@ export default function CreateOrderPage() {
                         </div>
                         <div className="flex justify-between items-center ml-1 mt-1">
                             <p className="text-[10px] text-gray-400">
-                                * 0 = Безкоштовно. Кошти 0 заморожуються.
+                                * 0 = Безкоштовно. Кошти &gt; 0 заморожуються.
                             </p>
                         </div>
                     </div>

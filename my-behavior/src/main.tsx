@@ -14,6 +14,7 @@ import GetScenario from "./pages/GetScenarii";
 import MyOrders from "./pages/MyOrderPages";
 import CreateOrderPage from "./pages/Order/Order-creat";
 import OrderDetailsPage from "./pages/Order/OrderDetailsPage";
+import EditOrderPage from "./pages/Order/EditOrderPage";
 
 import {supabase} from "./lib/supabaseClient";
 import {ToastContainer, toast} from 'react-toastify';
@@ -108,6 +109,7 @@ createRoot(container).render(
 
                             <Route path="/create-order" element={<CreateOrderPage/>}/>
                             <Route path="/order-details/:orderId" element={<OrderDetailsPage/>}/>
+                            <Route path="/edit-order/:orderId" element={<EditOrderPage/>}/>
                         </Routes>
                     </main>
                 </div>

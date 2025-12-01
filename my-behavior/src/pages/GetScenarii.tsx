@@ -124,7 +124,7 @@ const RequestCard: React.FC<{ request: IncomingRequest }> = ({request}) => {
 
     const handleClick = () => {
         // Переходимо на детальну сторінку
-        navigate(`/order-pages/${request.order_id}`, {state: {request}});
+        navigate(`/order-details/${request.order_id}`, {state: {request}});
     };
 
     return (

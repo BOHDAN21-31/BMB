@@ -232,7 +232,7 @@ export default function OrderDetailsPage() {
 
             if (error) throw error;
             toast.success("🎉 Вітаємо! Завдання завершено.");
-            navigate('/my-orders');
+            navigate('/MapPages');
         } catch (err: any) {
             toast.error("Помилка: " + err.message);
         } finally {
@@ -408,14 +408,14 @@ export default function OrderDetailsPage() {
                             <button
                                 onClick={handleDecline}
                                 disabled={loadingAction}
-                                className="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-500 font-bold hover:bg-gray-50 transition-colors"
+                                className="w-full bg-[#ffcdd6] text-[#0e0e0e] px-3 py-3 border border-[rgba(0,0,0,0.06)] rounded-full font-bold cursor-pointer shadow-md hover:brightness-95 transition-all"
                             >
                                 Відхилити
                             </button>
                             <button
                                 onClick={handleAccept}
                                 disabled={loadingAction}
-                                className="flex-[2] py-3 rounded-xl bg-black text-white font-bold shadow-lg hover:bg-gray-800 transition-colors"
+                                className="w-full bg-[#ffcdd6] text-[#0e0e0e] px-3 py-3 border border-[rgba(0,0,0,0.06)] rounded-full font-bold cursor-pointer shadow-md hover:brightness-95 transition-all"
                             >
                                 {loadingAction ? "..." : "Прийняти"}
                             </button>

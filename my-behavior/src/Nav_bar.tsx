@@ -16,7 +16,7 @@ export default function Nav_bar() {
 
     const handleLogout = async () => {
         await signOut();
-        navigate("/EnterPage");
+        navigate("/MapPages");
     };
 
     return (
